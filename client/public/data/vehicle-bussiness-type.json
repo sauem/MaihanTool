@@ -1,0 +1,8 @@
+{
+  "bus_fixed": "Xe khách tuyến cố định",
+  "static_bus": "Vận tải hành khách bằng xe bus",
+  "static_bus": "Vận tải hành khách theo hợp đồng",
+  "static_bus": "Vận chuyển khách du lịch bằng ô tô",
+  "static_bus": "Vận tải hàng hóa bằng container",
+  "static_bus": "Xe tải - vận chuyện hàng hóa không phải container"
+}
