@@ -5,9 +5,10 @@ namespace App\Export;
 use App\Models\Product;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
-class ProductSheet implements FromQuery, WithTitle, WithHeadings
+class ProductSheet implements FromQuery, WithTitle, WithHeadings, WithMapping
 {
     private $brandId;
     private $brandTitle;
@@ -21,14 +22,16 @@ class ProductSheet implements FromQuery, WithTitle, WithHeadings
 
     public function query()
     {
-        return Product::query()->select(['idproduct', 'pbanner', 'pname', 'pprice'])->where('idmanufacturer', '=', 0)
+        return Product::query()
+            ->where('idmanufacturer', '=', $this->brandId)
+            ->where('pshow', '=', 1)
             ->orderBy('idproduct', 'DESC')
             ->limit(5000);
     }
 
     public function title(): string
     {
-        return 'Month ' . $this->brandTitle;
+        return 'Brand ' . $this->brandTitle;
     }
 
     public function headings(): array
@@ -47,6 +50,21 @@ class ProductSheet implements FromQuery, WithTitle, WithHeadings
 //            "het_hang", "sort_top_manu", "sort_top_cate", "top_sell", "num_required", "num_random", "type_promotion",
 //            "flash_sale", "flash_sale_sort", "clock_active", "clock_time", "clock_daily", "capacity", "idparent"
 //        ];
-        return ['idproduct', 'crm_code', 'pname', 'pprice'];
+        return ['Mã sản phẩm','Tên sản phẩm','Thương hiệu', 'Dung tích/Phân loại', 'Giá gốc', 'Hình ảnh'];
+    }
+
+    public function map($row): array
+    {
+        // $description = html_entity_decode(strip_tags($row->pdescription), ENT_QUOTES | ENT_HTML5, "UTF-8");
+        // TODO: Implement map() method.
+        //$hetHang = $row->het_hang == '1' ? 'Hết hàng' : ($row->het_hang == '0' ? 'Còn hàng' : 'Sắp ra mắt');
+        return [
+            $row->idproduct,
+            $row->pname,
+            $this->brandTitle,
+            $row->quycach,
+            $row->pprice,
+            $row->images_b,
+        ];
     }
 }

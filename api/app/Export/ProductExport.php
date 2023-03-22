@@ -20,12 +20,14 @@ class ProductExport implements WithMultipleSheets
     public function sheets(): array
     {
         $sheets = [];
+        $sheets[] = new ProductSheet(0, 'Không nhãn');
+
         foreach ($this->brands as $brand) {
             $brandId = Arr::get($brand, 'idmanufacturer');
             $name = Arr::get($brand, 'manufacturer_name');
             $sheets[] = new ProductSheet($brandId, $name);
         }
 
-        return ['No brand'];
+        return $sheets;
     }
 }
